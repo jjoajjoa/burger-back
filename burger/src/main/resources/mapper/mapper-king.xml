@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper-king">
+
+	<select id="getBurgerKingByBurgerType" resultType="com.fivegirls.burger.vo.BurgerKingVO">
+		select g.game_pk
+			, u.user_pk
+			, u.user_name
+		    , b.burger_pk
+		    , b.burger_name
+		    , g.game_score
+		from game g 
+		left join user u on u.user_pk = g.user_pk
+		left join burger b on b.burger_pk = g.burger_pk
+		order by g.game_score desc
+		limit 3;
+	</select>
+	
+	<select id="getBurgerPoorByBurgerType" resultType="com.fivegirls.burger.vo.BurgerKingVO">
+		select g.game_pk
+			, u.user_pk
+			, u.user_name
+		    , b.burger_pk
+		    , b.burger_name
+		    , g.game_score
+		from game g 
+		left join user u on u.user_pk = g.user_pk
+		left join burger b on b.burger_pk = g.burger_pk
+		order by g.game_score
+		limit 3;
+	</select>
+	
+</mapper>
