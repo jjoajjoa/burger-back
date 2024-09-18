@@ -4,6 +4,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+
 import com.fivegirls.burger.vo.UserVO;
 
 @Component
@@ -13,7 +14,7 @@ public class BurgerLoginDAO {
     SqlSession session;
     
     // 로그인 확인을 위한 메서드
-    public UserVO selectUserLogin(UserVO userVO) {
-        return session.selectOne("selectUserLogin", userVO);
+    public UserVO selectUserLogin(UserVO vo) {
+        return session.selectOne("selectUserLogin", vo);
     }
 }

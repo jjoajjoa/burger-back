@@ -21,10 +21,10 @@ public class BurgerLoginRestController {
     
     //HttpSession을 사용하는 이유 : 로그인 상태를 유지하기 위해서
     @PostMapping("/login")
-    public UserVO login(@RequestBody UserVO userVO, HttpSession session) {
-        UserVO user = dao.selectUserLogin(userVO);
+    public UserVO login(@RequestBody UserVO vo, HttpSession session) {
+        UserVO user = dao.selectUserLogin(vo);
         if (user != null) {
-            session.setAttribute("user", user);
+            session.setAttribute("userId", user.getUserId());
             return user;
         } else {
             return null; // 로그인 실패 시 null 반환

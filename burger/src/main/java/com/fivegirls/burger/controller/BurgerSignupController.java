@@ -34,38 +34,20 @@ public class BurgerSignupController {
     
  // 아이디 중복 확인 API
     @PostMapping("/checkUsername")
-    public ResponseEntity<Boolean> checkUsername(@RequestBody Map<String, String> request) {
-        String userId = request.get("userId");
-        boolean isAvailable = dao.isUsernameAvailable(userId);
-        if (isAvailable) {
-            return ResponseEntity.ok(true);  // 사용 가능
-        } else {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(false);  // 사용 중
-        }
+    public boolean checkUsername(@RequestBody UserVO vo) {
+    	return dao.isUsernameAvailable(vo.getUserId()); // 사용 가능 여부 반환 (true/false)
     }
 
     // 이메일 중복 확인 API
     @PostMapping("/checkEmail")
-    public ResponseEntity<Boolean> checkEmail(@RequestBody Map<String, String> request) {
-        String email = request.get("email");
-        boolean isAvailable = dao.isEmailAvailable(email);
-        if (isAvailable) {
-            return ResponseEntity.ok(true);  // 사용 가능
-        } else {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(false);  // 사용 중
-        }
+    public boolean checkEmail(@RequestBody UserVO vo) {
+    	return dao.isEmailAvailable(vo.getUserEmail()); // 사용 가능 여부 반환 (true/false)
     }
 
     // 전화번호 중복 확인 API
     @PostMapping("/checkPhone")
-    public ResponseEntity<Boolean> checkPhone(@RequestBody Map<String, String> request) {
-        String phone = request.get("phone");
-        boolean isAvailable = dao.isPhoneAvailable(phone);
-        if (isAvailable) {
-            return ResponseEntity.ok(true);  // 사용 가능
-        } else {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(false);  // 사용 중
-        }
+    public boolean checkPhone(@RequestBody UserVO vo) {
+    	return dao.isPhoneAvailable(vo.getUserMobile()); // 사용 가능 여부 반환 (true/false)
     }
 
 }
