@@ -12,10 +12,8 @@ public class BurgerSignupDAO {
 	@Autowired
 	SqlSession session;
 
-	private static final String NAMESPACE = "mapper.signup";
-
 	public int insertUser(UserVO user) {
-		return session.insert(NAMESPACE + ".insertUser", user);
+		return session.insert("insertUser", user);
 	}
 	
 	public boolean isUsernameAvailable(String userId) {
@@ -23,13 +21,13 @@ public class BurgerSignupDAO {
         return count == 0;
     }
 
-    public boolean isEmailAvailable(String email) {
-        int count = session.selectOne("isEmailAvailable", email);
+    public boolean isEmailAvailable(String userEmail) {
+        int count = session.selectOne("isEmailAvailable", userEmail);
         return count == 0;
     }
 
-    public boolean isPhoneAvailable(String phone) {
-        int count = session.selectOne("isPhoneAvailable", phone);
+    public boolean isPhoneAvailable(String userMobile) {
+        int count = session.selectOne("isPhoneAvailable", userMobile);
         return count == 0;
     }
 
