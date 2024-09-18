@@ -24,7 +24,9 @@ public class BurgerLoginRestController {
     public UserVO login(@RequestBody UserVO vo, HttpSession session) {
         UserVO user = dao.selectUserLogin(vo);
         if (user != null) {
+        	session.setAttribute("userPk", user.getUserPk());
             session.setAttribute("userId", user.getUserId());
+            session.setAttribute("userName", user.getUserName());
             return user;
         } else {
             return null; // 로그인 실패 시 null 반환

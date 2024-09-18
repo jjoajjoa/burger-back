@@ -1,16 +1,20 @@
 package com.fivegirls.burger.vo;
 
 import java.util.Date;
+import java.util.List;
 
 public class BoardVO {
-
 	public int boardPk;
 	public int userPk;
+	public String userName;
 	public String boardTitle;
 	public String boardBody;
 	public Date boardRegDate;
 	public int boardViewCount;
+	// 댓글 리스트를 담을 필드 추가
+	public List<BoardCommentVO> comments;
 
+	// Getters and Setters
 	public int getBoardPk() {
 		return boardPk;
 	}
@@ -25,6 +29,14 @@ public class BoardVO {
 
 	public void setUserPk(int userPk) {
 		this.userPk = userPk;
+	}
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
 
 	public String getBoardTitle() {
@@ -59,10 +71,19 @@ public class BoardVO {
 		this.boardViewCount = boardViewCount;
 	}
 
-	@Override
+	// 댓글 리스트의 getter와 setter 추가
+	public List<BoardCommentVO> getComments() {
+		return comments;
+	}
+
+	public void setComments(List<BoardCommentVO> comments) {
+		this.comments = comments;
+	}
+
 	public String toString() {
-		return "BoardVO [boardPk=" + boardPk + ", userPk=" + userPk + ", boardTitle=" + boardTitle + ", boardBody="
-				+ boardBody + ", boardRegDate=" + boardRegDate + ", boardViewCount=" + boardViewCount + "]";
+		return "BoardVO [boardPk=" + boardPk + ", userPk=" + userPk + ", userName=" + userName + ", boardTitle="
+				+ boardTitle + ", boardBody=" + boardBody + ", boardRegDate=" + boardRegDate + ", boardViewCount="
+				+ boardViewCount + ", comments=" + comments + "]";
 	}
 
 }
