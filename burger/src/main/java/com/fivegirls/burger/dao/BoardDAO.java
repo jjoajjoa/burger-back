@@ -14,7 +14,7 @@ public class BoardDAO {
 
 	@Autowired
 	SqlSession session;
-
+  
 	// 리스트 불러오기
 	public List<BoardVO> getBoardList() throws Exception {
 		return session.selectList("getBoardList");
@@ -54,4 +54,5 @@ public class BoardDAO {
 	public int edit(BoardVO vo) {
 		return session.update("edit", vo);
 	}
+	
 }

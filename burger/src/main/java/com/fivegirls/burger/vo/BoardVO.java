@@ -11,6 +11,7 @@ public class BoardVO {
 	public String boardBody;
 	public Date boardRegDate;
 	public int boardViewCount;
+
 	// 댓글 리스트를 담을 필드 추가
 	public List<BoardCommentVO> comments;
 

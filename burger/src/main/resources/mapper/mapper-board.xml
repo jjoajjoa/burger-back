@@ -68,6 +68,7 @@
         where comment_pk = #{commentPk}
     </delete>
 
+
 	<delete id="deleteBoard" parameterType="int">
 		delete from board
 		where
