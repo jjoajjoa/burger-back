@@ -2,35 +2,19 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="mapper-board">
 
-	<!-- 게시글 목록 -->
+	<!-- 게시글 리스트 불러오기 -->
 	<select id="getBoardList"
 		resultType="com.fivegirls.burger.vo.BoardVO">
 		select b.board_pk
 			, b.user_pk
 			, b.board_title
 			, b.board_body
-			, DATE_FORMAT(b.board_reg_date, '%Y-%m-%d') AS boardRegDate
+			, DATE_FORMAT(b.board_reg_date, '%Y년 %m월 %d일') AS boardRegDate
 			, b.board_view_count
 			, u.user_name
 		from board b 
 		left join user u on b.user_pk = u.user_pk
 		ORDER BY b.board_reg_date ASC;  <!-- 작성시간 오름차순으로 정렬 -->
-	</select>
-
-	<!-- 게시글 정보 가져오기 -->
-	<select id="getBoardById" parameterType="int"
-		resultType="com.fivegirls.burger.vo.BoardVO">
-		select
-			b.board_pk,
-			b.user_pk,
-			u.user_name,
-			b.board_title,
-			b.board_body,
-			b.board_reg_date,
-			b.board_view_count
-		from board b
-		left join user u on b.user_pk = u.user_pk
-		where b.board_pk = #{boardPk}
 	</select>
 	
 	<!-- 게시글 추가 -->
@@ -50,6 +34,25 @@
 			0
 		)
 	</insert>
+	
+
+	<!-- 게시글 정보 가져오기 -->
+	<select id="getBoardById" parameterType="int"
+		resultType="com.fivegirls.burger.vo.BoardVO">
+		select
+			b.board_pk,
+			b.user_pk,
+			u.user_name,
+			b.board_title,
+			b.board_body,
+			DATE_FORMAT(b.board_reg_date, '%Y년 %m월 %d일  %H시 %i분 %s초') AS boardRegDate,
+			b.board_view_count
+		from board b
+		left join user u on b.user_pk = u.user_pk
+		where b.board_pk = #{boardPk}
+	</select>
+	
+	
 
 	<!-- 게시글 수정 -->
 	<update id="edit"
@@ -59,6 +62,11 @@
 			, board_body = #{boardBody}
 		where board_pk = #{boardPk}
 	</update>
+	
+	<!-- 댓글 먼저 삭제 -->
+<delete id="deleteCommentsByBoardId" parameterType="int">
+    DELETE FROM board_comment WHERE board_pk = #{boardPk}
+</delete>
 	
 	<!-- 게시글 삭제 -->
 	<delete id="deleteBoard" parameterType="int">
@@ -82,7 +90,7 @@
 			c.board_pk,
 			c.user_pk,
 			c.comment_body,
-			c.comment_reg_date,
+			DATE_FORMAT(c.comment_reg_date, '%Y년 %m월 %d일  %H시 %i분 %s초') AS commentRegDate, 
 			u.user_name
 		from board_comment c
 		left join user u on c.user_pk = u.user_pk

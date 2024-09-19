@@ -13,6 +13,6 @@
             board_view_count AS boardViewCount
         FROM board
         WHERE user_pk = (SELECT user_pk FROM user WHERE user_id = #{userId})
-        ORDER BY board_reg_date DESC
+        ORDER BY board_reg_date ASC
     </select>
 </mapper>

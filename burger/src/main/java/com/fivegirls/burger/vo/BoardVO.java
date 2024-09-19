@@ -9,11 +9,23 @@ public class BoardVO {
 	public String userName;
 	public String boardTitle;
 	public String boardBody;
-	public Date boardRegDate;
+	public String boardRegDate;
 	public int boardViewCount;
-
+	
 	// 댓글 리스트를 담을 필드 추가
 	public List<BoardCommentVO> comments;
+
+	
+	public int sessionUserPk;
+	
+	public void setSessionUserPk(int sessionUserPk) {
+		this.sessionUserPk = sessionUserPk;
+	}
+	
+	public int getSessionUserPk() {
+		return sessionUserPk;
+	}
+	
 
 	// Getters and Setters
 	public int getBoardPk() {
@@ -56,11 +68,11 @@ public class BoardVO {
 		this.boardBody = boardBody;
 	}
 
-	public Date getBoardRegDate() {
+	public String getBoardRegDate() {
 		return boardRegDate;
 	}
 
-	public void setBoardRegDate(Date boardRegDate) {
+	public void setBoardRegDate(String boardRegDate) {
 		this.boardRegDate = boardRegDate;
 	}
 
@@ -81,10 +93,13 @@ public class BoardVO {
 		this.comments = comments;
 	}
 
+	@Override
 	public String toString() {
 		return "BoardVO [boardPk=" + boardPk + ", userPk=" + userPk + ", userName=" + userName + ", boardTitle="
 				+ boardTitle + ", boardBody=" + boardBody + ", boardRegDate=" + boardRegDate + ", boardViewCount="
-				+ boardViewCount + ", comments=" + comments + "]";
+				+ boardViewCount + ", sessionUserPK=" + sessionUserPk + ", comments=" + comments + "]";
 	}
+
+	
 
 }

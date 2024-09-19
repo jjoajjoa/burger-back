@@ -1,6 +1,6 @@
 package com.fivegirls.burger.vo;
 
-import java.util.Date;
+import java.sql.Date;
 
 public class BoardCommentVO {
 	public int commentPk;
@@ -8,7 +8,7 @@ public class BoardCommentVO {
 	public int userPk;
 	public String userName;
 	public String commentBody;
-	public Date commentRegDate;
+	public String commentRegDate;
 
     // Getters and Setters
     public int getCommentPk() {
@@ -41,10 +41,10 @@ public class BoardCommentVO {
     public void setCommentBody(String commentBody) {
         this.commentBody = commentBody;
     }
-    public Date getCommentRegDate() {
+    public String getCommentRegDate() {
         return commentRegDate;
     }
-    public void setCommentRegDate(Date commentRegDate) {
+    public void setCommentRegDate(String commentRegDate) {
         this.commentRegDate = commentRegDate;
     }
 }
