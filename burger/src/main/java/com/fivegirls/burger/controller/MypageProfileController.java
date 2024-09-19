@@ -33,7 +33,6 @@ public class MypageProfileController {
         return dao.getUserProfile(userId);      
     }
     
-
     // 사용자 프로필 업데이트
     @Transactional
     @PostMapping("/updateUser")

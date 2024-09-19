@@ -3,63 +3,103 @@
 <mapper namespace="mapper-board">
 
 	<!-- Board 게시글 -->
-	<select id="getBoardList" resultType="com.fivegirls.burger.vo.BoardVO">
+	<select id="getBoardList"
+		resultType="com.fivegirls.burger.vo.BoardVO">
 		select b.board_pk
-			, b.user_pk
-			, b.board_title
-			, b.board_body
-			, DATE_FORMAT(b.board_reg_date, '%Y-%m-%d') AS boardRegDate
-			, b.board_view_count
-			, u.user_name 
-		from board b left join user u on b.user_pk = u.user_pk;
+		, b.user_pk
+		, b.board_title
+		, b.board_body
+		,
+		DATE_FORMAT(b.board_reg_date, '%Y-%m-%d') AS boardRegDate
+		,
+		b.board_view_count
+		, u.user_name
+		from board b
+		left join user u on
+		b.user_pk = u.user_pk
+		ORDER BY b.board_reg_date ASC;  <!-- 작성시간 오름차순으로 정렬 -->
 	</select>
+
+	<!-- 게시글 정보 가져오기 -->
+	<select id="getBoardById" parameterType="int"
+		resultType="com.fivegirls.burger.vo.BoardVO">
+		select
+			b.board_pk,
+			b.user_pk,
+			u.user_name,
+			b.board_title,
+			b.board_body,
+			b.board_reg_date,
+			b.board_view_count
+		from board b
+		left join user u on b.user_pk = u.user_pk
+		where b.board_pk = #{boardPk}
+	</select>
+
+	<!-- 댓글 목록 가져오기 -->
+	<select id="getCommentsByBoardId" parameterType="int"
+		resultType="com.fivegirls.burger.vo.BoardCommentVO">
+		select
+			c.comment_pk,
+			c.board_pk,
+			c.user_pk,
+			c.comment_body,
+			c.comment_reg_date,
+			u.user_name
+		from board_comment c
+		left join user u on c.user_pk = u.user_pk
+		where c.board_pk = #{boardPk}
+		order by c.comment_reg_date asc
+	</select>
+
+	<!-- 댓글 작성 -->
+	<insert id="createComment"
+		parameterType="com.fivegirls.burger.vo.BoardCommentVO">
+		insert into board_comment (board_pk
+		, user_pk
+		, comment_body
+		, comment_reg_date)
+		values (#{boardPk}, #{userPk}, #{commentBody}, now())
+	</insert>
 	
-	<select id="getBoardById" parameterType="int" resultType="com.fivegirls.burger.vo.BoardVO">
-		select b.board_pk
-			, b.user_pk
-			, b.board_title
-			, b.board_body
-			, b.board_reg_date
-			, b.board_view_count
-			, u.user_name 
-		from board b left join user u on b.user_pk = u.user_pk
-		where b.board_pk = #{id}
-	</select>
+	<!-- 댓글 삭제 -->
+    <delete id="deleteComment" parameterType="int">
+        delete from board_comment
+        where comment_pk = #{commentPk}
+    </delete>
+
 
 	<delete id="deleteBoard" parameterType="int">
 		delete from board
-		where board_pk = #{boardPk}
+		where
+		board_pk = #{boardPk}
 	</delete>
 
-	<insert id="createBoard" parameterType="com.fivegirls.burger.vo.BoardVO">
-		insert into board(user_pk
-			,board_title
-			,board_body
-			,board_reg_date
-			,board_view_count)
-		values (#{userPk}, #{boardTitle},
-		#{boardBody}, #{boardRegDate}, #{boardViewCount})
+	<insert id="createBoard"
+		parameterType="com.fivegirls.burger.vo.BoardVO">
+		insert into board
+		(user_pk
+		,board_title
+		,board_body
+		,board_reg_date
+		,board_view_count)
+		values (
+		#{userPk},
+		#{boardTitle},
+		#{boardBody},
+		sysdate(),
+		0
+		)
 	</insert>
 
-	<update id="edit" parameterType="com.fivegirls.burger.vo.BoardVO">
+	<update id="edit"
+		parameterType="com.fivegirls.burger.vo.BoardVO">
 		update board
-			set board_title = #{boardTitle}
-			,board_body = #{boardBody}
+		set board_title = #{boardTitle}
+		,board_body =
+		#{boardBody}
 		where board_pk = #{boardPk}
 	</update>
 
-	
-	<!-- Comment 댓글 -->
-	<select id="getCommentsByBoardId" parameterType="int" resultType="com.fivegirls.burger.vo.BoardVO">
-		select c.comment_pk
-			, c.board_pk
-		    , c.user_pk
-		    , c.comment_body
-		    , DATE_FORMAT(c.comment_reg_date, '%Y-%m-%d') AS commentRegDate
-		    , u.user_name
-		from board_comment c left join user u on c.user_pk = u.user_pk
-		where c.board_pk = #{id};
-	</select>
-	
 
 </mapper>
