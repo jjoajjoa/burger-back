@@ -13,7 +13,7 @@ public class TestTypeDAO {
 
     // 결과 저장
     public int insertTestType(TestTypeVO vo) {
-    	return session.update("insertTestType", vo);
+       return session.update("insertTestType", vo);
     }
 
     // 결과 조회 (PK와 답변에 따라
