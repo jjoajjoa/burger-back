@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fivegirls.burger.dao.BoardDAO;
+import com.fivegirls.burger.service.BoardService;
 import com.fivegirls.burger.vo.BoardCommentVO;
 import com.fivegirls.burger.vo.BoardVO;
 
@@ -23,6 +24,11 @@ public class BoardRestController {
 
 	@Autowired
 	BoardDAO dao;
+	
+	@Autowired
+	BoardService service;
+	
+	@Autowired
 	HttpSession session;
 
 	@GetMapping("/boardlist")
@@ -33,7 +39,8 @@ public class BoardRestController {
 	@GetMapping("/detail/{id}")
 	public BoardVO getBoardDetail(@PathVariable("id") int boardPk) {
 		System.out.println("지금 누른 게시판 아이디: " + boardPk);
-		return dao.getBoardById(boardPk);
+		service.increaseViewCount(boardPk);
+		return service.getBoardById(boardPk);
 	}
 
 	@PostMapping("/add") // 경로 맞추기
@@ -52,9 +59,11 @@ public class BoardRestController {
 	@GetMapping("/board/{boardPk}")
 	public BoardVO getBoardWithComments(@PathVariable int boardPk) {
 		// 게시글 정보 가져오기
-		BoardVO board = dao.getBoardById(boardPk);
+		BoardVO board = service.getBoardById(boardPk);
 		// 댓글 목록 가져오기
-		List<BoardCommentVO> comments = dao.getCommentsByBoardId(boardPk);
+		List<BoardCommentVO> comments = service.getCommentsByBoardId(boardPk);
+		// 조회수 증가
+		service.increaseViewCount(boardPk);
 		board.setComments(comments);
 		return board;
 	}
