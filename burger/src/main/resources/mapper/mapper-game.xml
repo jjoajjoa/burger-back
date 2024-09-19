@@ -1,10 +1,85 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="mapper-game">
+
 	<select id="selectBurgerList" resultType="com.fivegirls.burger.vo.BurgerGameVO">
 		select	burger_pk burgerId
 				, burger_name
 		from burger
 	</select>
-
+	
+	<insert id="createGame" parameterType="map">
+		insert into game (burger_pk, user_pk) 
+    	values (#{burgerId}, #{userPk})
+	</insert>
+	<!-- insert into game (user_pk, burger_pk)
+        values (#{userPk}, #{burgerId}) -->
+	
+	<select id="selectGameIdbyUserPk" parameterType="int" resultType="int">
+		select game_pk
+        from game 
+        where user_pk = #{userPk}
+        order by game_pk DESC
+        limit 1;
+	</select>
+	
+	<select id="selectIngrList" resultType="com.fivegirls.burger.vo.IngrVO">
+		select	ingr_pk
+				, ingr_name
+				, ingr_url
+		from ingredient
+	</select>
+	
+	<select id="compareQuantityIngr" parameterType="map" resultType="Integer">
+		select ingr_usage_quantity
+        from game_log
+        where game_pk = #{gamePk}
+        	and ingr_pk = #{ingrPk}
+	</select>
+	
+	<select id="ingrMaxQuantity" parameterType="int" resultType="int">
+		select max_usage_per_burger_ingr
+		from burger_recipe
+		where ingr_pk = #{ingrPk}
+	</select>
+	
+	<update id="updateIngrQuantity" parameterType="map">
+		update game_log
+		set ingr_usage_quantity = ingr_usage_quantity + 1
+		where game_pk = #{gamePk}
+		and ingr_pk = #{ingrPk}
+	</update>
+	
+	<insert id="createGameLog" parameterType="map">
+		insert into game_log (ingr_pk, burger_pk, game_pk, ingr_usage_quantity)
+        values (#{ingrPk}, #{burgerId}, #{gamePk}, 1)
+	</insert>
+	
+	<select id="selectIngrListByGamePk" parameterType="int" resultType="com.fivegirls.burger.vo.IngrVO">
+		select g.ingr_pk, i.ingr_name, i.ingr_url, g.ingr_usage_quantity
+    	from game_log g
+    	join ingredient i ON g.ingr_pk = i.ingr_pk
+    	where g.game_pk = #{gamePk}
+	</select>
+	
+	<select id="burgerScoreCal" parameterType="int" resultType="com.fivegirls.burger.vo.IngrVO">
+		SELECT SUM(
+	        CASE 
+	            WHEN gl.ingr_usage_quantity &lt;= br.max_usage_per_burger_ingr 
+	            THEN (br.score_per_burger_ingr * gl.ingr_usage_quantity /2)
+	            ELSE (br.score_per_burger_ingr * br.max_usage_per_burger_ingr /2)
+	        END
+	    ) AS totalScore
+	    FROM burger_recipe br
+	    JOIN game_log gl ON br.ingr_pk = gl.ingr_pk
+	    WHERE gl.game_pk = #{gamePk}
+	</select>
+	
+	<update id="QuantityIngrDelete" parameterType="map">
+		update game_log
+		set ingr_usage_quantity = ingr_usage_quantity - 1
+		where game_pk = #{gamePk}
+		and ingr_pk = #{ingrPk}
+	</update>
+	
 </mapper>
