@@ -64,15 +64,15 @@
 	
 	<select id="burgerScoreCal" parameterType="int" resultType="com.fivegirls.burger.vo.IngrVO">
 		SELECT SUM(
-        CASE 
-            WHEN gl.ingr_usage_quantity &lt;= br.max_usage_per_burger_ingr 
-            THEN (br.score_per_burger_ingr * gl.ingr_usage_quantity /2)
-            ELSE (br.score_per_burger_ingr * br.max_usage_per_burger_ingr /2)
-        END
-    ) AS totalScore
-    FROM burger_recipe br
-    JOIN game_log gl ON br.ingr_pk = gl.ingr_pk
-    WHERE gl.game_pk = #{gamePk}
+	        CASE 
+	            WHEN gl.ingr_usage_quantity &lt;= br.max_usage_per_burger_ingr 
+	            THEN (br.score_per_burger_ingr * gl.ingr_usage_quantity /2)
+	            ELSE (br.score_per_burger_ingr * br.max_usage_per_burger_ingr /2)
+	        END
+	    ) AS totalScore
+	    FROM burger_recipe br
+	    JOIN game_log gl ON br.ingr_pk = gl.ingr_pk
+	    WHERE gl.game_pk = #{gamePk}
 	</select>
 	
 	<update id="QuantityIngrDelete" parameterType="map">

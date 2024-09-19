@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper.findaccount">
+
+    <!-- 아이디 찾기 : 이름, 이메일 -->
+    <select id="findIdByNameAndEmail" parameterType="com.fivegirls.burger.vo.UserVO" resultType="com.fivegirls.burger.vo.UserVO">
+        SELECT user_id 
+        FROM user
+        WHERE user_name = #{userName}
+        AND user_email = #{userEmail}
+    </select>
+
+    <!-- 비밀번호 찾기 : 아이디, 이메일, 전화번호 -->
+    <select id="findPwByIdAndEmailAndPhone" parameterType="com.fivegirls.burger.vo.UserVO" resultType="com.fivegirls.burger.vo.UserVO">
+	    SELECT user_pw 
+	    FROM user
+	    WHERE user_id = #{userId}
+	    AND user_email = #{userEmail}
+	    AND user_mobile = #{userMobile}
+	</select>
+</mapper>
