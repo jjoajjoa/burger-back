@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fivegirls.burger.dao.BoardDAO;
+import com.fivegirls.burger.service.BoardService;
 import com.fivegirls.burger.vo.BoardCommentVO;
 import com.fivegirls.burger.vo.BoardVO;
-import com.fivegirls.burger.vo.BurgerGameVO;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -24,11 +24,23 @@ public class BoardRestController {
 
 	@Autowired
 	BoardDAO dao;
+	
+	@Autowired
+	BoardService service;
+	
+	@Autowired
 	HttpSession session;
 
-	@RequestMapping("/boardlist")
+	@GetMapping("/boardlist")
 	public List<BoardVO> boardlist() throws Exception {
 		return dao.getBoardList();
+	}
+
+	@GetMapping("/detail/{id}")
+	public BoardVO getBoardDetail(@PathVariable("id") int boardPk) {
+		System.out.println("지금 누른 게시판 아이디: " + boardPk);
+		service.increaseViewCount(boardPk);
+		return service.getBoardById(boardPk);
 	}
 
 	@PostMapping("/add") // 경로 맞추기
@@ -47,13 +59,12 @@ public class BoardRestController {
 	@GetMapping("/board/{boardPk}")
 	public BoardVO getBoardWithComments(@PathVariable int boardPk) {
 		// 게시글 정보 가져오기
-		BoardVO board = dao.getBoardById(boardPk);
-
+		BoardVO board = service.getBoardById(boardPk);
 		// 댓글 목록 가져오기
-		List<BoardCommentVO> comments = dao.getCommentsByBoardId(boardPk);
-
+		List<BoardCommentVO> comments = service.getCommentsByBoardId(boardPk);
+		// 조회수 증가
+		service.increaseViewCount(boardPk);
 		board.setComments(comments);
-
 		return board;
 	}
 
@@ -71,22 +82,8 @@ public class BoardRestController {
 		if (userPk == null) {
 			throw new RuntimeException("로그인이 필요합니다.");
 		}
-
 		// 댓글 삭제
 		dao.deleteComment(commentPk);
 	}
-	
-	@RequestMapping("/detail/{id}")
-	public BoardVO getBoardDetail(@PathVariable("id") int boardPk) {
-	    System.out.println("지금 누른 게시판 아이디: " + boardPk);
-	    return dao.getBoardById(boardPk);
-	}
-	
-	/* 댓글 */
-	@RequestMapping("/comments/{id}")
-    public List<BoardVO> getComments(@PathVariable("id") int boardPk) {
-	    System.out.println("지금 누른 게시판 아이디(댓글용): " + boardPk);
-        return dao.getCommentsByBoardId(boardPk);
-    }
-	
+
 }
