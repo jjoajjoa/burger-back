@@ -78,6 +78,14 @@ public class BurgerGameDAO {
 		return session.selectList("burgerScoreCal", gamePk);
 	}
 	
+	public void burgerScoreInsert(int userPk, int burgerId, int burgerScore) {
+		Map<String, Integer> params = new HashMap<>(); 
+	    params.put("userPk", userPk);
+	    params.put("burgerId", burgerId);
+	    params.put("burgerScore", burgerScore);
+		session.insert("burgerScoreInsert", params);
+	}
+	
 	public void QuantityIngrDelete(int ingrPk, int gamePk) {
 		Map<String, Integer> params = new HashMap<>(); 
 	    params.put("ingrPk", ingrPk);

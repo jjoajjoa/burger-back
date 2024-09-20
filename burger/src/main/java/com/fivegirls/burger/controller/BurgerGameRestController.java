@@ -38,9 +38,8 @@ public class BurgerGameRestController {
 		System.out.println("햄버거리스트아이디: " + vo.getBurgerId());
 		int burgerId = vo.getBurgerId();
 		session.setAttribute("burgerId", burgerId);
-		// session.getAttribute("userPk");
-		session.setAttribute("userPk", 1);
 		int userPk = (int) session.getAttribute("userPk");
+		System.out.println("오류생겼다 유저Pk들어오냐?: " + userPk);
 		dao.createGame(burgerId, userPk);
 
 		// 사용자id집어넣고 해당 game테이블 id가져오기
@@ -109,6 +108,10 @@ public class BurgerGameRestController {
 		for (IngrVO ingr : totalScore) {
 			burgerScore += ingr.getTotalScore();
 		}
+		
+		//점수 db에 넣기
+		int userPk = (int) session.getAttribute("userPk");
+		dao.burgerScoreInsert(userPk, burgerId, burgerScore);
 		return burgerScore;
 	}
 
