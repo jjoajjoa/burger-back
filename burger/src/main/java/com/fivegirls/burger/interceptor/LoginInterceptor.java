@@ -9,13 +9,10 @@ import jakarta.servlet.http.HttpSession;
 @Component
 public class LoginInterceptor implements HandlerInterceptor {
 	@Override
-	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
-			throws Exception {
+	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 		System.out.println("LoginInterceptor.preHandler() uri=" + request.getRequestURI());
-		
-		HttpSession session = request.getSession();
 
-		
+		HttpSession session = request.getSession();
 
 		// userPk가 없으면 로그인 페이지로 리다이렉트
 		if (session == null) {
@@ -28,7 +25,6 @@ public class LoginInterceptor implements HandlerInterceptor {
 
 			// userPk가 있으면 요청을 계속 처리
 			System.out.println("User is logged in with userPk: " + userPk);
-			
 		}
 
 		return true; // 요청 통과
