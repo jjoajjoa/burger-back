@@ -1,15 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="mapper.mypageMyburger">
+<mapper namespace="mapper-mypageMyburger">
 
     <!-- 사용자가 작성한 버거목록 조회 -->
     <select id="getIngrListbyUserPk" parameterType="String" resultType="com.fivegirls.burger.vo.IngrVO">
-        SELECT i.*
+         SELECT 
+            g.game_pk AS gamePk,
+            i.ingr_pk AS ingrPk,
+            i.ingr_name AS ingrName,
+            i.ingr_url AS ingrUrl,
+            i.ingr_side_url AS ingrSideUrl,
+            gl.ingr_usage_quantity AS ingrUsageQuantity
         FROM game g
         JOIN game_log gl ON g.game_pk = gl.game_pk
         JOIN ingredient i ON gl.ingr_pk = i.ingr_pk
         WHERE g.user_pk = (
             SELECT user_pk FROM user WHERE user_id = #{userId}
         )
+        ORDER BY g.game_pk, i.ingr_pk
     </select>
 </mapper>
