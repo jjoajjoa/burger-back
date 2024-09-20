@@ -22,6 +22,7 @@ public class BurgerKingRestController {
 	@GetMapping("/burgergameking")
 	public List<BurgerKingVO> getBurgerKing() throws Exception {
 		List<BurgerKingVO> list = dao.getBurgerKingByBurgerType();
+		System.out.println("점수: " + list);
 		return list;
 	}
 

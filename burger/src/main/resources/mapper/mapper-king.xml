@@ -26,6 +26,7 @@
 		from game g 
 		left join user u on u.user_pk = g.user_pk
 		left join burger b on b.burger_pk = g.burger_pk
+        where g.game_score is not null
 		order by g.game_score
 		limit 3;
 	</select>
