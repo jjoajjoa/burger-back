@@ -30,10 +30,10 @@ public class TestTypeController {
 
     // 사용자 PK와 답변으로 결과 조회 (GET 방식)
     @GetMapping("/getTest")
-    public TestTypeVO getTestTypeByUser(@RequestParam int userPk) {
+    public TestTypeVO getTestTypeByUser() {
     	int sessionUserPk = (int) session.getAttribute("userPk");
     	System.out.println("sessionUserPk >>>>" + sessionUserPk);
-    	TestTypeVO test = dao.getTestTypeByUser(userPk);
+    	TestTypeVO test = dao.getTestTypeByUser(sessionUserPk);
     	test.setSessionUserPk(sessionUserPk);
     	System.out.println("/api/getTest" + test);
         return test;

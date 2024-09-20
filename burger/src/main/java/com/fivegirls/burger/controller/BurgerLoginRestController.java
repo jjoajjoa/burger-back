@@ -32,4 +32,20 @@ public class BurgerLoginRestController {
             return null; // 로그인 실패 시 null 반환
         }
     }
+    
+    @PostMapping("/logout")  
+    public String logout(HttpSession session) {
+    	
+    	// 세션 무효화 전에 세션 정보 출력
+        System.out.println("Session before invalidation: " + session.getAttribute("userPk"));
+        
+        // 세션 무효화
+        session.invalidate();
+        
+     // 세션 무효화 후 확인 로그 출력
+        System.out.println("Session invalidated.");
+        return "로그아웃 성공";  // 필요한 경우 JSON이나 메시지를 반환
+    }
+    
+
 }
