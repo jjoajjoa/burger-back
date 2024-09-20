@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper-testtype">
+   
+   <!-- 결과 저장 -->
+   <update id="insertTestType"
+      parameterType="com.fivegirls.burger.vo.TestTypeVO">
+      update user u 
+      set u.test_type_pk = (
+         select t.test_type_pk
+         from test_type t
+         where t.test_type1 = #{burger}
+            and t.test_type2 = #{jorengi}
+            and t.test_type3 = #{coding}
+            and t.test_type4 = #{teacher}
+      )
+      where u.user_pk = #{userPk}
+   </update>
+   
+   <!-- 결과 조회 -->
+   <select id="getTestTypeByUser" parameterType="int" resultType="com.fivegirls.burger.vo.TestTypeVO">
+       SELECT u.user_pk,
+              u.test_type_pk,
+              t.test_type_result,
+              t.test_type_details
+       FROM user u
+       JOIN test_type t ON u.test_type_pk = t.test_type_pk
+       WHERE u.user_pk = #{userPk}
+   </select>
+
+</mapper>
