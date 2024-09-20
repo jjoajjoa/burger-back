@@ -27,6 +27,7 @@
 		select	ingr_pk
 				, ingr_name
 				, ingr_url
+				, ingr_side_url
 		from ingredient
 	</select>
 	
@@ -56,7 +57,7 @@
 	</insert>
 	
 	<select id="selectIngrListByGamePk" parameterType="int" resultType="com.fivegirls.burger.vo.IngrVO">
-		select g.ingr_pk, i.ingr_name, i.ingr_url, g.ingr_usage_quantity
+		select g.ingr_pk, i.ingr_name, i.ingr_url, i.ingr_side_url, g.ingr_usage_quantity
     	from game_log g
     	join ingredient i ON g.ingr_pk = i.ingr_pk
     	where g.game_pk = #{gamePk}
@@ -74,6 +75,11 @@
 	    JOIN game_log gl ON br.ingr_pk = gl.ingr_pk
 	    WHERE gl.game_pk = #{gamePk}
 	</select>
+	
+	<insert id="burgerScoreInsert" parameterType="map">
+		insert into game (burger_pk, user_pk, game_score) 
+    	values (#{burgerId}, #{userPk}, #{burgerScore})
+	</insert>
 	
 	<update id="QuantityIngrDelete" parameterType="map">
 		update game_log
